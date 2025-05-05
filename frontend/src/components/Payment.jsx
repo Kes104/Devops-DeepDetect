@@ -69,7 +69,7 @@ const Payment = () => {
       handler: async (response) => {
         try {
           // Save payment details to your backend
-          await axios.post("http://localhost:8000/api/payment/verify", {
+          await axios.post("https://deepdetect-s9ar.onrender.com/api/payment/verify", {
             paymentId: response.razorpay_payment_id,
             plan: plan,
             amount: currentPlan.price
@@ -146,7 +146,7 @@ const Payment = () => {
         }, 3000)
       } else {
         // Create RazorPay order
-        const orderResponse = await axios.post("http://localhost:8000/api/payment/orders", {
+        const orderResponse = await axios.post("https://deepdetect-s9ar.onrender.com/api/payment/orders", {
           amount: currentPlan.price,
           currency: 'INR' // Or 'INR'
         }, {
