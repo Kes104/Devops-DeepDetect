@@ -11,24 +11,24 @@ pipeline {
     stages {
         stage('Build and Deploy') {
             steps {
-                dir(Model_Api){
-                sh '''
-                    # Set Docker env for Minikube
-                    eval $(minikube docker-env)
+                dir('Model_Api') {
+                    sh '''
+                        # Set Docker env for Minikube
+                        eval $(minikube docker-env)
 
-                    # Check Docker connection
-                    docker version
+                        # Check Docker connection
+                        docker version
 
-                    # Build Docker image
-                    docker build -t ddd:1.0.0 .
+                        # Build Docker image
+                        docker build -t ddd:1.0.0 .
 
-                    # Check kubectl version for sanity
-                    ${KUBECTL_PATH} version --client
+                        # Check kubectl version for sanity
+                        ${KUBECTL_PATH} version --client
 
-                    # Apply Kubernetes deployment and service configs
-                    ${KUBECTL_PATH} apply -f deployment.yaml
-                    ${KUBECTL_PATH} apply -f service.yaml
-                '''
+                        # Apply Kubernetes deployment and service configs
+                        ${KUBECTL_PATH} apply -f deployment.yaml
+                        ${KUBECTL_PATH} apply -f service.yaml
+                    '''
                 }
             }
         }
