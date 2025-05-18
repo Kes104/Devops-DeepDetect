@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    stages {
+        stage('Set Docker Env to Minikube') {
+            steps {
+                sh 'eval $(minikube docker-env)'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t ddd:1.0.0 .'
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f deployment.yaml'
+                sh 'kubectl apply -f service.yaml'
+            }
+        }
+    }
+}

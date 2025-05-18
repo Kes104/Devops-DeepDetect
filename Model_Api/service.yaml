@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+spec:
+  selector:
+    app: ddd
+  ports:
+    - protocol: TCP
+      port: 80            # Cluster IP service port
+      targetPort: 8000    # The port your app container exposes
+  type: NodePort   # Or ClusterIP / LoadBalancer based on your need

@@ -11,6 +11,8 @@ from PIL import Image
 
 # Suppress TensorFlow warnings
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 
 # Optimize TensorFlow memory usage
 physical_devices = tf.config.list_physical_devices("GPU")

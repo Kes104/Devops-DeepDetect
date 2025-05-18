@@ -1,2 +1,2 @@
 #!/bin/bash
-gunicorn -k uvicorn.workers.UvicornWorker main:app
+python -m uvicorn main:app --reload
