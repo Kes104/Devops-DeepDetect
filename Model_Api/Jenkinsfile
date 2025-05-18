@@ -26,8 +26,8 @@ pipeline {
                     ${KUBECTL_PATH} version --client
 
                     # Apply Kubernetes deployment and service configs
-                    ${KUBECTL_PATH} apply -f Model_Api/deployment.yaml
-                    ${KUBECTL_PATH} apply -f Model_Api/service.yaml
+                    ${KUBECTL_PATH} apply -f deployment.yaml
+                    ${KUBECTL_PATH} apply -f service.yaml
                 '''
                 }
             }
