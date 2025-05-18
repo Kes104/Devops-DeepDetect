@@ -2,37 +2,31 @@ pipeline {
     agent any
     environment {
         DOCKER_TLS_VERIFY = "1"
-        DOCKER_HOST = "tcp://192.168.58.2:2376" // Update with your minikube IP
+        DOCKER_HOST = "tcp://192.168.58.2:2376"
         DOCKER_CERT_PATH = "/var/lib/jenkins/.minikube/certs"
         MINIKUBE_ACTIVE_DOCKERD = "minikube"
         KUBECONFIG = "/var/lib/jenkins/.kube/config"
+        KUBECTL_PATH = "/var/lib/docker/volumes/minikube/_data/lib/minikube/binaries/v1.32.0/kubectl"
     }
     stages {
-        stage('Set Docker Env to Minikube') {
+        stage('Build and Deploy') {
             steps {
                 sh '''
+                    # Set Docker env for Minikube
                     eval $(minikube docker-env)
-                    echo "[INFO] Docker environment set to Minikube."
+
+                    # Check Docker connection
                     docker version
-                '''
-            }
-        }
-        stage('Build Docker Image') {
-            steps {
-                dir('Model_Api') {
-                    sh '''
-                        eval $(minikube docker-env)
-                        docker build -t ddd:1.0.0 .
-                    '''
-                }
-            }
-        }
-        stage('Deploy to Kubernetes') {
-            steps {
-                sh '''
-                    eval $(minikube docker-env)
-                    kubectl apply -f Model_Api/deployment.yaml
-                    kubectl apply -f Model_Api/service.yaml
+
+                    # Build Docker image
+                    docker build -t ddd:1.0.0 .
+
+                    # Check kubectl version for sanity
+                    ${KUBECTL_PATH} version --client
+
+                    # Apply Kubernetes deployment and service configs
+                    ${KUBECTL_PATH} apply -f Model_Api/deployment.yaml
+                    ${KUBECTL_PATH} apply -f Model_Api/service.yaml
                 '''
             }
         }
