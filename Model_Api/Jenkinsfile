@@ -11,6 +11,7 @@ pipeline {
     stages {
         stage('Build and Deploy') {
             steps {
+                dir(Model_Api){
                 sh '''
                     # Set Docker env for Minikube
                     eval $(minikube docker-env)
@@ -28,6 +29,7 @@ pipeline {
                     ${KUBECTL_PATH} apply -f Model_Api/deployment.yaml
                     ${KUBECTL_PATH} apply -f Model_Api/service.yaml
                 '''
+                }
             }
         }
     }
