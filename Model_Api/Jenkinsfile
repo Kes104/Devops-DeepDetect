@@ -1,14 +1,25 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_TLS_VERIFY = "1"
+        DOCKER_HOST = "tcp://192.168.58.2:2376"              // Change this IP if your Minikube IP differs
+        DOCKER_CERT_PATH = "/var/lib/jenkins/.minikube/certs" // Ensure Jenkins user has access here
+        MINIKUBE_ACTIVE_DOCKERD = "minikube"
+        KUBECONFIG = "/var/lib/jenkins/.kube/config"          // Path to kubeconfig for kubectl access
+    }
     stages {
         stage('Set Docker Env to Minikube') {
             steps {
-                sh 'eval $(minikube docker-env)'
+                // Run eval in same shell session so Docker env vars apply for next steps
+                sh '''
+                    eval $(minikube docker-env)
+                    docker version   # just to verify docker connection to minikube
+                '''
             }
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ddd:1.0.0 .'
+                sh 'docker build -t ddd:1.0.0 .'  // Build your Docker image here
             }
         }
         stage('Deploy to Kubernetes') {
