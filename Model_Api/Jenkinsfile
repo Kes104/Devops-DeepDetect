@@ -6,28 +6,27 @@ pipeline {
         DOCKER_CERT_PATH = "/var/lib/jenkins/.minikube/certs"
         MINIKUBE_ACTIVE_DOCKERD = "minikube"
         KUBECONFIG = "/var/lib/jenkins/.kube/config"
-        KUBECTL_PATH = "/var/lib/docker/volumes/minikube/_data/lib/minikube/binaries/v1.32.0/kubectl"
     }
     stages {
         stage('Build and Deploy') {
             steps {
                 dir('Model_Api') {
                     sh '''
-                        # Set Docker env for Minikube
+                        # Set Docker environment to use Minikube's Docker daemon
                         eval $(minikube docker-env)
 
-                        # Check Docker connection
+                        # Verify Docker connection to Minikube
                         docker version
 
-                        # Build Docker image
+                        # Build Docker image from local Dockerfile
                         docker build -t ddd:1.0.0 .
 
-                        # Check kubectl version for sanity
-                        ${KUBECTL_PATH} version --client
+                        # Check kubectl client version (using global /usr/local/bin/kubectl)
+                        kubectl version --client
 
-                        # Apply Kubernetes deployment and service configs
-                        ${KUBECTL_PATH} apply -f deployment.yaml
-                        ${KUBECTL_PATH} apply -f service.yaml
+                        # Apply Kubernetes deployment and service configuration
+                        kubectl apply -f deployment.yaml
+                        kubectl apply -f service.yaml
                     '''
                 }
             }
