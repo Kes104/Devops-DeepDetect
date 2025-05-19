@@ -12,7 +12,7 @@ pipeline {
             steps {
                 dir('Model_Api') {
                     sh '''
-                        # Set Docker environment to use Minikube's Docker daemon
+                        # Set Docker virtual environment to use Minikube's Docker daemon
                         eval $(minikube docker-env)
 
                         # Verify Docker connection to Minikube
