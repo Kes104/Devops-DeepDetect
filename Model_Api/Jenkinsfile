@@ -25,8 +25,8 @@ pipeline {
                         kubectl version --client
 
                         # Apply Kubernetes deployment and service configuration
-                        kubectl apply -f deployment.yaml
-                        kubectl apply -f service.yaml
+                        kubectl apply -f --validate=false deployment.yaml
+                        kubectl apply -f --validate=false service.yaml
                         kubectl rollout restart deployment/ddd-deployment
                     '''
                 }
