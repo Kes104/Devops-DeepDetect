@@ -38,6 +38,7 @@ def preprocess_image(file: bytes):
 
 @app.get("/")
 async def root():
+    # change to check for CI/CD pipeline
     return {"message": "Welcome to the Deepfake Detector API!"}
 
 
