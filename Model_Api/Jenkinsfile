@@ -27,7 +27,7 @@ pipeline {
                         # Apply Kubernetes deployment and service configuration
                         kubectl apply -f deployment.yaml
                         kubectl apply -f service.yaml
-                        kubectl rollout restart deployment/ddd-deployment
+                        kubectl rollout restart deployment/my-app-deployment
                     '''
                 }
             }
