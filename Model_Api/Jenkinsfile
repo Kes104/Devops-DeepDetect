@@ -19,7 +19,7 @@ pipeline {
                         docker version
 
                         # Build Docker image from local Dockerfile
-                        docker build -t ddd:1.0.0 .
+                        docker build -t ddd:1.0.${BUILD_NUMBER} .
 
                         # Check kubectl client version (using global /usr/local/bin/kubectl)
                         kubectl version --client
