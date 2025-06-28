@@ -12,22 +12,22 @@ pipeline {
             steps {
                 dir('Model_Api') {
                     sh '''
-                        # Set Docker virtual environment to use Minikube's Docker daemon
                         eval $(minikube docker-env)
 
-                        # Verify Docker connection to Minikube
-                        docker version
+                        IMAGE_TAG=1.0.$BUILD_NUMBER
+                        echo "Building Docker Image with tag $IMAGE_TAG"
+                        docker build -t ddd:$IMAGE_TAG .
 
-                        # Build Docker image from local Dockerfile
-                        docker build -t ddd:1.0.${BUILD_NUMBER} .
+                        docker images | grep ddd
 
-                        # Check kubectl client version (using global /usr/local/bin/kubectl)
-                        kubectl version --client
-
-                        # Apply Kubernetes deployment and service configuration
-                        kubectl apply -f deployment.yaml
+                        # Apply service.yaml if needed
                         kubectl apply -f service.yaml
-                        kubectl rollout restart deployment/my-app-deployment
+
+                        # Update Deployment to use new image
+                        kubectl set image deployment/my-app-deployment my-app-container=ddd:$IMAGE_TAG || kubectl apply -f deployment.yaml
+
+                        # Wait for Deployment rollout to complete
+                        kubectl rollout status deployment/my-app-deployment
                     '''
                 }
             }
