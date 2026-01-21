@@ -1,9 +1,3 @@
-Nice, this is a **README refactor**, not code — I’ll rewrite it so it fits **`devops-deepdetect`**, emphasizes **CI/CD, Docker, Kubernetes, Jenkins, and MLOps**, and still stays honest to what the project actually does.
-
-Below is a **clean, production-style README** you can directly paste into your repo.
-
----
-
 # **DevOps-DeepDetect**
 
 ### **ML Deployment & CI/CD Automation for Deepfake Detection**
